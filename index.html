@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Bookings</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #f8f1e5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        .header {
+            background-color: #2c1810;
+            color: #d4af37;
+            text-align: center;
+            padding: 2rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .booking-form {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d4af37;
+            border-radius: 5px;
+        }
+
+        .btn-submit {
+            background-color: #d4af37;
+            color: #fff;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .payment-methods {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .payment-option {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .payment-option img {
+            width: 50px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Royal Booking Experience</h1>
+        <p>Experience Luxury Like Never Before</p>
+    </div>
+
+    <div class="booking-form">
+        <h2>Make Your Reservation</h2>
+        <form id="bookingForm">
+            <div class="form-group">
+                <label for="name">Full Name:</label>
+                <input type="text" id="name" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Date of Visit:</label>
+                <input type="date" id="date" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+                <label for="guests">Number of Guests:</label>
+                <select id="guests" class="form-control" required>
+                    <option value="">Select number of guests</option>
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                    <option value="5">5+ Guests</option>
+                </select>
+            </div>
+
+            <div class="payment-methods">
+                <div class="payment-option">
+                    <img src="visa.png" alt="Visa">
+                    <p>Visa</p>
+                </div>
+                <div class="payment-option">
+                    <img src="mastercard.png" alt="Mastercard">
+                    <p>Mastercard</p>
+                </div>
+                <div class="payment-option">
+                    <img src="paypal.png" alt="PayPal">
+                    <p>PayPal</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="card">Card Number:</label>
+                <input type="text" id="card" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label for="expiry">Expiry Date:</label>
+                <input type="text" id="expiry" class="form-control" placeholder="MM/YY" required>
+            </div>
+
+            <div class="form-group">
+                <label for="cvv">CVV:</label>
+                <input type="text" id="cvv" class="form-control" placeholder="XXX" required>
+            </div>
+
+            <button type="submit" class="btn-submit">Confirm Booking</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Booking submitted successfully! Thank you for choosing our services.');
+            
+            // Redirect to booking confirmation page after 2 seconds
+            setTimeout(function() {
+                window.location.href = 'booking_confirm.html';
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

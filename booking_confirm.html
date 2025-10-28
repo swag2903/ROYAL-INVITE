@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Book — Demo</title>
+    <style>body{font-family:Arial;padding:18px}label{display:block;margin:8px 0 4px}input,textarea{width:320px;padding:6px}</style>
+</head>
+<body>
+    <h2>Make a Booking</h2>
+    <form id="bookingForm"></form>
+        <label>Name<input name="name" required value="Pankaj Sharma"></label>
+        <label>Email<input name="email" required value="pankaj@example.com"></label>
+        <label>Phone<input name="phone" value="+91-9876543210"></label>
+        <label>Check-in<input name="checkIn" type="date" value="2025-11-05"></label>
+        <label>Check-out<input name="checkOut" type="date" value="2025-11-08"></label>
+        <label>Room Type<input name="roomType" value="Deluxe Suite"></label>
+        <label>Nights<input name="nights" type="number" value="3"></label>
+        <label>Rate per night<input name="ratePerNight" type="number" step="0.01" value="120.00"></label>
+        <label>Extras (one per line as "Description|Price")<textarea name="extras" rows="3">Airport Pickup|25.00
+Breakfast Package|15.00</textarea></label>
+        <label>Tax %<input name="taxPercent" type="number" step="0.01" value="12.0"></label>
+        <label>Deposit<input name="deposit" type="number" step="0.01" value="50.00"></label>
+        <div style="margin-top:12px">
+            <button type="submit">Proceed to Confirmation</button>
+        </div>
+    </form>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            const f = e.target;
+            // build extras array from textarea lines "Desc|Price"
+            const extras = (f.extras.value.trim() ? f.extras.value.split('\n').map(line => {
+                const [desc, price] = line.split('|').map(s => s && s.trim());
+                return { desc: desc || '', price: Number(price || 0) };
+            }) : []);
+
+            const booking = {
+                bookingId: 'BK-' + Date.now().toString().slice(-8),
+                name: f.name.value,
+                email: f.email.value,
+                phone: f.phone.value,
+                checkIn: f.checkIn.value,
+                checkOut: f.checkOut.value,
+                roomType: f.roomType.value,
+                nights: Number(f.nights.value) || 1,
+                ratePerNight: Number(f.ratePerNight.value) || 0,
+                extras,
+                taxPercent: Number(f.taxPercent.value) || 0,
+                deposit: Number(f.deposit.value) || 0
+             
+            };
+
+
+            try { localStorage.setItem('lastBooking', JSON.stringify(booking)); } catch(e){}
+
+            // redirect to the confirmation page (same folder)
+            location.href = 'booking confirm.html';
+            // if your filename has spaces and the link breaks, use: location.href = encodeURI('booking confirm.html');
+        });
+    </script>
+</body>
+</html>
