@@ -1,63 +1,106 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Book — Demo</title>
-    <style>body{font-family:Arial;padding:18px}label{display:block;margin:8px 0 4px}input,textarea{width:320px;padding:6px}</style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Royal Ticket — VIP</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=BL2">
+
+<!-- libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
 </head>
-<body>
-    <h2>Make a Booking</h2>
-    <form id="bookingForm"></form>
-        <label>Name<input name="name" required value="Pankaj Sharma"></label>
-        <label>Email<input name="email" required value="pankaj@example.com"></label>
-        <label>Phone<input name="phone" value="+91-9876543210"></label>
-        <label>Check-in<input name="checkIn" type="date" value="2025-11-05"></label>
-        <label>Check-out<input name="checkOut" type="date" value="2025-11-08"></label>
-        <label>Room Type<input name="roomType" value="Deluxe Suite"></label>
-        <label>Nights<input name="nights" type="number" value="3"></label>
-        <label>Rate per night<input name="ratePerNight" type="number" step="0.01" value="120.00"></label>
-        <label>Extras (one per line as "Description|Price")<textarea name="extras" rows="3">Airport Pickup|25.00
-Breakfast Package|15.00</textarea></label>
-        <label>Tax %<input name="taxPercent" type="number" step="0.01" value="12.0"></label>
-        <label>Deposit<input name="deposit" type="number" step="0.01" value="50.00"></label>
-        <div style="margin-top:12px">
-            <button type="submit">Proceed to Confirmation</button>
-        </div>
-    </form>
+<body class="theme-black">
 
-    <script>
-        document.getElementById('bookingForm').addEventListener('submit', function(e){
-            e.preventDefault();
-            const f = e.target;
-            // build extras array from textarea lines "Desc|Price"
-            const extras = (f.extras.value.trim() ? f.extras.value.split('\n').map(line => {
-                const [desc, price] = line.split('|').map(s => s && s.trim());
-                return { desc: desc || '', price: Number(price || 0) };
-            }) : []);
+<main class="wrap">
+  <div class="ticket-vip">
+    <div class="ticket-left">
+      <div class="vip-badge">VIP</div>
+      <h1 class="ticket-title">Royal Invite — Guest Ticket</h1>
+      <p class="muted">Present this at reception. Valid proof of booking.</p>
 
-            const booking = {
-                bookingId: 'BK-' + Date.now().toString().slice(-8),
-                name: f.name.value,
-                email: f.email.value,
-                phone: f.phone.value,
-                checkIn: f.checkIn.value,
-                checkOut: f.checkOut.value,
-                roomType: f.roomType.value,
-                nights: Number(f.nights.value) || 1,
-                ratePerNight: Number(f.ratePerNight.value) || 0,
-                extras,
-                taxPercent: Number(f.taxPercent.value) || 0,
-                deposit: Number(f.deposit.value) || 0
-             
-            };
+      <div class="ticket-info">
+        <div class="info-row"><div class="label">Booking ID</div><div id="bookingId" class="val">—</div></div>
+        <div class="info-row"><div class="label">Guest</div><div id="guestName" class="val"></div></div>
+        <div class="info-row"><div class="label">Phone</div><div id="guestPhone" class="val"></div></div>
+        <div class="info-row"><div class="label">Email</div><div id="guestEmail" class="val"></div></div>
+        <div class="info-row"><div class="label">Room</div><div id="roomType" class="val"></div></div>
+        <div class="info-row"><div class="label">Stay</div><div id="dates" class="val"></div></div>
+        <div class="info-row"><div class="label">Nights</div><div id="nights" class="val"></div></div>
+      </div>
 
+      <div class="ticket-actions">
+        <button class="btn gold" id="printBtn">Print</button>
+        <button class="btn outline" id="downloadPdfBtn">Download PDF</button>
+        <button class="btn ghost" id="shareBtn">Share WhatsApp</button>
+        <button class="btn dark" id="backBtn">Back / Edit</button>
+      </div>
+    </div>
 
-            try { localStorage.setItem('lastBooking', JSON.stringify(booking)); } catch(e){}
+    <div class="ticket-right">
+      <div class="price-box">
+        <div class="price-row"><div>Room</div><div id="roomSub">₹ 0.00</div></div>
+        <div class="price-row"><div>Extras</div><div id="extrasSub">₹ 0.00</div></div>
+        <div class="price-row"><div>Tax</div><div id="taxSub">₹ 0.00</div></div>
+        <div class="price-row"><div>Deposit</div><div id="depositSub">- ₹ 0.00</div></div>
+        <hr>
+        <div class="price-row big"><div>Total</div><div id="totalSub">₹ 0.00</div></div>
+      </div>
 
-            // redirect to the confirmation page (same folder)
-            location.href = 'booking confirm.html';
-            // if your filename has spaces and the link breaks, use: location.href = encodeURI('booking confirm.html');
-        });
-    </script>
+      <div class="qr-wrap">
+        <canvas id="qrcode" width="170" height="170"></canvas>
+        <div class="qr-note muted">Scan at reception</div>
+      </div>
+
+      <div class="signature">Authorized Signature</div>
+    </div>
+  </div>
+</main>
+
+<script>
+const toMoney = v => '₹ ' + Number(v || 0).toFixed(2);
+const raw = localStorage.getItem('lastBooking');
+if(!raw){
+  alert('No booking found — please create a booking first.');
+  location.href = 'index.html';
+} else {
+  const b = JSON.parse(raw);
+
+  document.getElementById('bookingId').textContent = b.bookingId || '—';
+  document.getElementById('guestName').textContent = b.name;
+  document.getElementById('guestPhone').textContent = b.phone;
+  document.getElementById('guestEmail').textContent = b.email;
+  document.getElementById('roomType').textContent = b.roomType + ' — ' + toMoney(b.ratePerNight) + '/night';
+  document.getElementById('dates').textContent = b.checkIn + ' → ' + b.checkOut;
+  document.getElementById('nights').textContent = (b.nights || 0);
+
+  const extras = (b.extras || []).map(x=> `${x.desc} — ${toMoney(x.price)}`).join('\n');
+  document.getElementById('extrasSub').textContent = toMoney((b.extras||[]).reduce((s,x)=> s + Number(x.price||0),0));
+  document.getElementById('roomSub').textContent = toMoney((b.nights||0) * (b.ratePerNight||0));
+  document.getElementById('taxSub').textContent = toMoney(b.taxAmount || 0);
+  document.getElementById('depositSub').textContent = '- ' + toMoney(b.deposit || 0);
+  document.getElementById('totalSub').textContent = toMoney(b.totalPayable || 0);
+
+  // QR
+  try {
+    new QRious({ element: document.getElementById('qrcode'), value: 'Booking:' + b.bookingId + ' | ' + b.name, size:170, level:'H', background:'#fff', foreground:'#2b220f' });
+  } catch(e){}
+
+  // buttons
+  document.getElementById('printBtn').addEventListener('click', ()=> window.print());
+  document.getElementById('backBtn').addEventListener('click', ()=> location.href = 'index.html');
+  document.getElementById('downloadPdfBtn').addEventListener('click', ()=>{
+    const el = document.querySelector('.ticket-vip');
+    html2pdf().set({margin:0.2, filename: b.bookingId + '.pdf', html2canvas:{scale:2}}).from(el).save();
+  });
+  document.getElementById('shareBtn').addEventListener('click', ()=>{
+    const txt = `Royal Invite — ${b.bookingId}%0AName: ${b.name}%0APhone: ${b.phone}%0AStay: ${b.checkIn} → ${b.checkOut}%0ATotal: ${toMoney(b.totalPayable)}`;
+    window.open('https://wa.me/?text=' + encodeURIComponent(txt));
+  });
+}
+</script>
+
 </body>
 </html>
