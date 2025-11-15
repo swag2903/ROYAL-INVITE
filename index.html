@@ -1,153 +1,290 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Royal Bookings</title>
-    <style>
-        body {
-            font-family: 'Times New Roman', serif;
-            background-color: #f8f1e5;
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Royal Booking — Reserve (Black Luxury)</title>
 
-        .header {
-            background-color: #2c1810;
-            color: #d4af37;
-            text-align: center;
-            padding: 2rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
-        .booking-form {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #d4af37;
-            border-radius: 5px;
-        }
-
-        .btn-submit {
-            background-color: #d4af37;
-            color: #fff;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .payment-methods {
-            display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
-        }
-
-        .payment-option {
-            text-align: center;
-            padding: 10px;
-        }
-
-        .payment-option img {
-            width: 50px;
-            height: auto;
-        }
-    </style>
+<link rel="stylesheet" href="style.css?v=BL1">
 </head>
-<body>
-    <div class="header">
-        <h1>Royal Booking Experience</h1>
-        <p>Experience Luxury Like Never Before</p>
+<body class="theme-black">
+
+<main class="wrap">
+  <header class="brand">
+    <div class="logo">ROYAL<span class="accent">•</span>INVITE</div>
+    <p class="tag">Black Luxury — Reserve your VIP experience</p>
+  </header>
+
+  <section class="panel grid-two">
+    <div class="card form-card">
+      <h2 class="card-title">Guest & Stay Details</h2>
+
+      <form id="bookingForm" autocomplete="off">
+        <div class="row">
+          <label>Full name<input id="name" required></label>
+          <label>Email<input id="email" type="email" required></label>
+        </div>
+
+        <div class="row">
+          <label>Phone<input id="phone" required></label>
+          <label>Number of Guests
+            <select id="guests" required>
+              <option value="1">1 Guest</option>
+              <option value="2">2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+              <option value="5">5+ Guests</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="row">
+          <label>Check-in<input id="checkIn" type="date" required></label>
+          <label>Check-out<input id="checkOut" type="date" required></label>
+        </div>
+
+        <label>Room Type
+          <select id="roomType">
+            <option value="Deluxe Room" data-rate="4500">Deluxe Room — ₹4,500/night</option>
+            <option value="Premium Suite" data-rate="8500">Premium Suite — ₹8,500/night</option>
+            <option value="Royal Villa" data-rate="18000">Royal Villa — ₹18,000/night</option>
+          </select>
+        </label>
+
+        <fieldset class="extras">
+          <legend>Extras (optional)</legend>
+          <label class="check"><input type="checkbox" class="extra" data-desc="Airport Pickup" data-price="700"> Airport Pickup — ₹700</label>
+          <label class="check"><input type="checkbox" class="extra" data-desc="Breakfast" data-price="350"> Breakfast — ₹350</label>
+          <label class="check"><input type="checkbox" class="extra" data-desc="Decor" data-price="2200"> Luxury Decor — ₹2,200</label>
+
+          <div class="custom-extra">
+            <input id="customExtra" placeholder="Custom extra (Description|Price)"/>
+            <button type="button" id="addExtraBtn" class="mini">Add</button>
+          </div>
+          <div id="extrasList" class="extras-list"></div>
+        </fieldset>
+
+        <div class="row">
+          <label>Tax %<input id="taxPercent" type="number" value="12" step="0.01"></label>
+          <label>Deposit (₹)<input id="deposit" type="number" value="0" step="0.01"></label>
+        </div>
+
+        <label>Payment Method
+          <select id="paymentMethod">
+            <option value="UPI">UPI</option>
+            <option value="CARD">Card</option>
+            <option value="CASH">Cash</option>
+          </select>
+        </label>
+
+        <div id="paymentBoxes">
+          <div id="upiBox">
+            <label>UPI ID<input id="upiId" placeholder="yourid@bank"></label>
+          </div>
+
+          <div id="cardBox" class="hidden">
+            <label>Card number<input id="cardNumber" maxlength="19" placeholder="XXXX XXXX XXXX XXXX"></label>
+            <div class="row">
+              <label>Expiry<input id="cardExpiry" placeholder="MM/YY"></label>
+              <label>CVV<input id="cardCvv" maxlength="4" placeholder="CVV"></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions-inline" style="margin-top:14px;">
+          <button class="btn gold" type="submit">Confirm Booking — Instant</button>
+          <button class="btn ghost" type="button" id="resetBtn">Reset</button>
+        </div>
+
+      </form>
     </div>
 
-    <div class="booking-form">
-        <h2>Make Your Reservation</h2>
-        <form id="bookingForm">
-            <div class="form-group">
-                <label for="name">Full Name:</label>
-                <input type="text" id="name" class="form-control" required>
-            </div>
+    <aside class="card summary-card">
+      <h3 class="card-title">Payment Summary</h3>
 
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" class="form-control" required>
-            </div>
+      <div class="summary-block">
+        <div class="row-s">
+          <div>Room (nights)</div><div id="roomSubtotal">₹ 0.00</div>
+        </div>
 
-            <div class="form-group">
-                <label for="date">Date of Visit:</label>
-                <input type="date" id="date" class="form-control" required>
-            </div>
+        <div class="row-s">
+          <div>Extras</div><div id="extrasTotal">₹ 0.00</div>
+        </div>
 
-            <div class="form-group">
-                <label for="guests">Number of Guests:</label>
-                <select id="guests" class="form-control" required>
-                    <option value="">Select number of guests</option>
-                    <option value="1">1 Guest</option>
-                    <option value="2">2 Guests</option>
-                    <option value="3">3 Guests</option>
-                    <option value="4">4 Guests</option>
-                    <option value="5">5+ Guests</option>
-                </select>
-            </div>
+        <div class="row-s">
+          <div>Tax <span id="taxPercText">(12%)</span></div><div id="taxAmount">₹ 0.00</div>
+        </div>
 
-            <div class="payment-methods">
-                <div class="payment-option">
-                    <img src="visa.png" alt="Visa">
-                    <p>Visa</p>
-                </div>
-                <div class="payment-option">
-                    <img src="mastercard.png" alt="Mastercard">
-                    <p>Mastercard</p>
-                </div>
-                <div class="payment-option">
-                    <img src="paypal.png" alt="PayPal">
-                    <p>PayPal</p>
-                </div>
-            </div>
+        <div class="row-s">
+          <div>Deposit</div><div id="depositAmount">- ₹ 0.00</div>
+        </div>
 
-            <div class="form-group">
-                <label for="card">Card Number:</label>
-                <input type="text" id="card" class="form-control" placeholder="XXXX XXXX XXXX XXXX" required>
-            </div>
+        <hr class="sep">
 
-            <div class="form-group">
-                <label for="expiry">Expiry Date:</label>
-                <input type="text" id="expiry" class="form-control" placeholder="MM/YY" required>
-            </div>
+        <div class="row-s big">
+          <div>Total payable</div><div id="grandTotal">₹ 0.00</div>
+        </div>
 
-            <div class="form-group">
-                <label for="cvv">CVV:</label>
-                <input type="text" id="cvv" class="form-control" placeholder="XXX" required>
-            </div>
+        <div class="muted small mt-8">Instant confirmation — no delay. Click Confirm to get your VIP ticket.</div>
+      </div>
+    </aside>
 
-            <button type="submit" class="btn-submit">Confirm Booking</button>
-        </form>
-    </div>
+  </section>
 
-    <script>
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Booking submitted successfully! Thank you for choosing our services.');
-            
-            // Redirect to booking confirmation page after 2 seconds
-            setTimeout(function() {
-                window.location.href = 'booking_confirm.html';
-            }, 2000);
-        });
-    </script>
+  <footer class="credits">
+    <div>© <strong>ROYAL INVITE</strong> — Black Luxury</div>
+  </footer>
+</main>
+
+<!-- QR & PDF libs used on confirmation page; safe to include here too -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script>
+/* JS — live price calc, extras, payment toggles, submit -> booking_confirm.html */
+function toMoney(v){ return '₹ ' + Number(v || 0).toFixed(2); }
+function nightsBetween(a,b){
+  if(!a||!b) return 0;
+  const A = new Date(a + 'T00:00:00'), B = new Date(b + 'T00:00:00');
+  if(isNaN(A)||isNaN(B)||B<=A) return 0;
+  return Math.max(1, Math.round((B-A)/(1000*60*60*24)));
+}
+
+/* Elements */
+const roomTypeEl = document.getElementById('roomType');
+const checkInEl = document.getElementById('checkIn');
+const checkOutEl = document.getElementById('checkOut');
+const taxPercentEl = document.getElementById('taxPercent');
+const depositEl = document.getElementById('deposit');
+const extrasEls = ()=> Array.from(document.querySelectorAll('.extra'));
+const extrasListEl = document.getElementById('extrasList');
+const runtimeExtras = [];
+const paymentMethodEl = document.getElementById('paymentMethod');
+
+const roomSubtotalEl = document.getElementById('roomSubtotal');
+const extrasTotalEl = document.getElementById('extrasTotal');
+const taxAmountEl = document.getElementById('taxAmount');
+const depositAmountEl = document.getElementById('depositAmount');
+const grandTotalEl = document.getElementById('grandTotal');
+const taxPercText = document.getElementById('taxPercText');
+
+function getRate(){ return Number(roomTypeEl.selectedOptions[0].dataset.rate || 0); }
+
+function recalc(){
+  const nights = nightsBetween(checkInEl.value, checkOutEl.value);
+  const rate = getRate();
+  const roomSubtotal = nights * rate;
+
+  const checkedExtras = extrasEls().filter(e=>e.checked).map(e=> ({desc:e.dataset.desc, price:Number(e.dataset.price)}));
+  const extrasSum = checkedExtras.reduce((s,x)=> s + x.price, 0) + runtimeExtras.reduce((s,x)=> s + Number(x.price || 0), 0);
+
+  const taxPerc = Number(taxPercentEl.value || 0);
+  const taxAmount = ((roomSubtotal + extrasSum) * taxPerc / 100);
+  const deposit = Number(depositEl.value || 0);
+  const grand = roomSubtotal + extrasSum + taxAmount - deposit;
+
+  roomSubtotalEl.textContent = toMoney(roomSubtotal) + (nights? ('  ('+nights+' nights)') : '');
+  extrasTotalEl.textContent = toMoney(extrasSum);
+  taxAmountEl.textContent = toMoney(taxAmount);
+  depositAmountEl.textContent = '- ' + toMoney(deposit);
+  grandTotalEl.textContent = toMoney(grand);
+  taxPercText.textContent = '('+taxPerc+'%)';
+}
+
+/* payment toggle */
+paymentMethodEl.addEventListener('change', ()=>{
+  const v = paymentMethodEl.value;
+  document.getElementById('upiBox').classList.toggle('hidden', v!=='UPI');
+  document.getElementById('cardBox').classList.toggle('hidden', v!=='CARD');
+});
+
+/* wire recalc events */
+['change','input'].forEach(evt=>{
+  [roomTypeEl, checkInEl, checkOutEl, taxPercentEl, depositEl].forEach(el=> el.addEventListener(evt, recalc));
+  document.querySelectorAll('.extra').forEach(e=> e.addEventListener('change', recalc));
+});
+
+/* custom extra add */
+document.getElementById('addExtraBtn').addEventListener('click', ()=>{
+  const raw = document.getElementById('customExtra').value.trim();
+  if(!raw) return alert('Enter custom extra as Description|Price');
+  const parts = raw.split('|').map(s=> s.trim());
+  const desc = parts[0] || 'Extra';
+  const price = Number(parts[1] || 0);
+  runtimeExtras.push({desc, price});
+
+  const el = document.createElement('div');
+  el.className = 'extra-row';
+  el.innerHTML = `<span class="value">${desc} — ${toMoney(price)}</span> <button class="mini danger">Remove</button>`;
+  extrasListEl.appendChild(el);
+
+  el.querySelector('button').addEventListener('click', ()=>{
+    const idx = runtimeExtras.findIndex(x=> x.desc===desc && x.price===price);
+    if(idx>=0) runtimeExtras.splice(idx,1);
+    el.remove(); recalc();
+  });
+
+  document.getElementById('customExtra').value='';
+  recalc();
+});
+
+/* reset */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  document.getElementById('bookingForm').reset();
+  extrasListEl.innerHTML = '';
+  runtimeExtras.length = 0;
+  recalc();
+});
+
+/* initial recalc */
+recalc();
+
+/* submit -> save to localStorage & immediate redirect */
+document.getElementById('bookingForm').addEventListener('submit', (e)=>{
+  e.preventDefault();
+  // validate dates
+  const nights = nightsBetween(checkInEl.value, checkOutEl.value);
+  if(nights === 0) return alert('Please choose valid check-in and check-out dates (check-out must be after check-in).');
+
+  const checkedExtras = extrasEls().filter(e=> e.checked).map(e=> ({desc:e.dataset.desc, price:Number(e.dataset.price)}));
+  const allExtras = checkedExtras.concat(runtimeExtras);
+
+  const rate = getRate();
+  const roomSubtotal = nights * rate;
+  const taxPerc = Number(taxPercentEl.value || 0);
+  const extrasSum = allExtras.reduce((s,x)=> s + Number(x.price || 0), 0);
+  const taxAmount = ((roomSubtotal + extrasSum) * taxPerc / 100);
+  const deposit = Number(depositEl.value || 0);
+  const totalPayable = roomSubtotal + extrasSum + taxAmount - deposit;
+
+  // build booking object
+  const booking = {
+    bookingId: 'BK' + Date.now().toString().slice(-8),
+    name: document.getElementById('name').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    checkIn: checkInEl.value,
+    checkOut: checkOutEl.value,
+    nights,
+    guests: document.getElementById('guests').value,
+    roomType: roomTypeEl.value,
+    ratePerNight: rate,
+    extras: allExtras,
+    taxPercent: taxPerc,
+    taxAmount,
+    deposit,
+    totalPayable,
+    paymentMethod: document.getElementById('paymentMethod').value,
+    upiId: document.getElementById('upiId').value.trim() || null,
+    card: document.getElementById('cardNumber').value.trim() || null,
+    createdAt: new Date().toISOString()
+  };
+
+  try { localStorage.setItem('lastBooking', JSON.stringify(booking)); } catch(e){ console.warn(e); }
+  // immediate redirect, no delay
+  location.href = 'booking_confirm.html';
+});
+</script>
 </body>
 </html>
