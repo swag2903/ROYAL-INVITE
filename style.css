@@ -1,0 +1,154 @@
+/* style.css — Black Luxury theme (use with index.html + booking_confirm.html) */
+:root{
+  --bg:#0f0f10;
+  --card:#131313;
+  --gold-1:#d4af37;
+  --gold-2:#b68f20;
+  --muted:#c6b99e;
+  --glass: rgba(255,255,255,0.03);
+  --soft-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  --radius:14px;
+  --accent:linear-gradient(90deg,var(--gold-1),var(--gold-2));
+}
+
+/* base */
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--muted);font-family:Inter,Arial,Helvetica,sans-serif;line-height:1.45}
+.wrap{max-width:1100px;margin:28px auto;padding:18px}
+.brand{display:flex;flex-direction:column;align-items:center;margin-bottom:18px}
+.logo{font-family:'Playfair Display', serif;color: #fff;font-size:30px;letter-spacing:2px}
+.logo .accent{color:var(--gold-1);margin-left:8px}
+.tag{color:var(--muted);margin-top:6px;font-size:14px}
+
+/* layout */
+.panel{display:grid;grid-template-columns: 1fr 360px;gap:22px}
+@media (max-width:980px){ .panel{grid-template-columns:1fr; padding:0 10px} }
+
+/* cards */
+.card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:var(--radius); padding:20px; box-shadow:var(--soft-shadow); border:1px solid rgba(255,255,255,0.03)}
+.form-card{min-height:420px}
+.summary-card{position:sticky;top:24px}
+
+/* titles */
+.card-title{color:#fff;font-weight:700;margin:0 0 12px 0;font-size:18px}
+
+/* form */
+label{display:block;margin-bottom:10px;color:var(--muted);font-weight:600}
+input,select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff;outline:none}
+textarea{min-height:90px}
+.row{display:flex;gap:12px}
+.row > label{flex:1}
+.grid-two .row{flex-direction:row}
+@media (max-width:700px){ .row{flex-direction:column} }
+
+.extras{margin-top:8px;padding:12px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.02)}
+.check{display:block;margin:8px 0;color:var(--muted)}
+
+.extras-list{margin-top:8px}
+.extra-row{display:flex;justify-content:space-between;align-items:center;padding:8px;border-radius:8px;background:rgba(0,0,0,0.15);margin-top:6px}
+.mini{padding:6px 10px;border-radius:8px;border:none;background:transparent;color:var(--gold-1);cursor:pointer}
+.mini.danger{color:#ff6b6b}
+.btn{padding:12px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:700}
+.btn.gold{background:var(--gold-1);color:#111;box-shadow:0 6px 18px rgba(214,175,55,0.08)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.btn.outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+.btn.dark{background:#111;color:#fff}
+
+/* summary */
+.summary-block{padding:10px;border-radius:10px;background:rgba(0,0,0,0.08)}
+.row-s{display:flex;justify-content:space-between;padding:8px 0;color:var(--muted)}
+.sep{border:none;border-top:1px solid rgba(255,255,255,0.04);margin:10px 0}
+.big{font-size:18px;color:#fff}
+
+/* footer */
+.credits{text-align:center;color:rgba(255,255,255,0.08);margin-top:18px;font-size:13px}
+
+/* ticket page */
+.ticket-vip{display:flex;gap:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:20px;border-radius:16px;box-shadow:var(--soft-shadow);align-items:stretch}
+@media (max-width:980px){ .ticket-vip{flex-direction:column} }
+
+.ticket-left{flex:1;padding:18px;border-radius:12px;background:linear-gradient(90deg, rgba(0,0,0,0.25), rgba(0,0,0,0.18)); border-right:1px solid rgba(255,255,255,0.02)}
+.ticket-right{width:320px;padding:18px;border-radius:12px;background:linear-gradient(90deg, rgba(20,20,20,0.25), rgba(0,0,0,0.18)); text-align:center}
+
+.vip-badge{display:inline-block;padding:6px 10px;border-radius:10px;background:linear-gradient(90deg,var(--gold-1),var(--gold-2));color:#111;font-weight:800;margin-bottom:12px}
+.ticket-title{color:#fff;margin:6px 0 6px 0;font-family:'Playfair Display', serif;font-size:22px}
+.muted{color:var(--muted);font-size:13px}
+.ticket-info{margin-top:12px}
+.info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed rgba(255,255,255,0.02)}
+.info-row .label{color:var(--muted);font-size:13px}
+.info-row .val{color:#fff;font-weight:700}
+.ticket-actions{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap}
+
+/* price right */
+.price-box{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));padding:12px;border-radius:10px}
+.price-row{display:flex;justify-content:space-between;padding:8px 0;color:var(--muted)}
+.qr-wrap{margin-top:18px}
+.qr-note{font-size:13px;margin-top:8px}
+
+/* signature */
+.signature{margin-top:18px;padding:12px;border-radius:8px;background:linear-gradient(90deg,#0000,#0001);color:var(--muted);font-size:13px;border-top:1px solid rgba(255,255,255,0.02)}
+
+/* utils */
+.hidden{display:none}
+.small{font-size:13px}
+.mt-8{margin-top:8px}
+/* ====== Fix: make form text readable on light input backgrounds ====== */
+
+/* Make input/select/textarea text dark when inputs have a light background */
+input, select, textarea {
+  color: #111 !important;                /* dark text for readability */
+  background-color: #eef5ff !important;  /* subtle light background for inputs */
+  border: 1px solid rgba(0,0,0,0.08) !important;
+}
+
+/* Placeholders should be slightly muted but readable */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(0,0,0,0.45) !important;
+}
+
+/* For WebKit date/time inputs (Chrome) — ensure text is visible */
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"] {
+  -webkit-text-fill-color: #111 !important;
+  color: #111 !important;
+}
+
+/* Make SELECT text visible and keep arrow readable */
+select {
+  color: #111 !important;
+  background-image: linear-gradient(45deg, transparent 50%, rgba(0,0,0,0.15) 50%),
+                    linear-gradient(135deg, rgba(0,0,0,0.15) 50%, transparent 50%);
+  background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 36px;
+}
+
+/* Checkbox & radio: use gold accent color for checked state */
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: #d4af37; /* modern browsers */
+}
+
+/* Make summary / totals text brighter on dark background */
+.summary-block,
+.price-box,
+.ticket-right,
+.summary-row,
+.row-s {
+  color: #eae3d6 !important; /* slightly warm off-white for readability */
+}
+
+/* Make labels readable */
+label { color: #e8d8b1 !important; }
+
+/* Buttons text clearer on dark backgrounds */
+.btn, .mini { color: #111 !important; }
+
+/* If you prefer dark inputs instead of light ones, use this instead:
+input, select, textarea { background: rgba(255,255,255,0.03); color: #fff; border:1px solid rgba(255,255,255,0.04); }
+*/
+
+/* ====== end contrast fixes ====== */
